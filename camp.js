@@ -159,16 +159,23 @@ navigator.geolocation.getCurrentPosition((position) => {
 
 const $search = document.getElementById("search");
 const $lists = document.getElementById("lists");
-
+const $listPetText = document.querySelector("listPetText");
 const renderList = (el) => {
   console.log("render", el);
-
+  const listImg = el.imgUrl == "" ? "./img/camp2.svg" : el.imgUrl;
   const $listArr = document.createElement("li");
+  const listColor = "";
+  // if (el.pet.includes("불")) {
+  //   listColor = "listPetTextRed";
+  // } else {
+  //   listColor = "listPetTextGreen";
+  // }
+
   $listArr.classList.add("list");
   $listArr.innerHTML = `
                 <div class="listContent">
                   <div class="listImg">
-                    <img src="${el.imgUrl}" alt="기본이미지" />
+                    <img src="${listImg}" alt="캠핑이미지" />
                   </div>
                   <div class="listInfos">
                     <div class="listTitle">
@@ -177,7 +184,8 @@ const renderList = (el) => {
                     <div class="listInfo">
                       <p>${el.addr}</p>
                       <p>상태 : ${el.manageSttus}</p>
-                      <p>반려견 : ${el.pet}</p>
+                     
+                      <p class="listPet">반려견 : <span class=${listColor}>${el.pet}</span></p>
                     </div>
                   </div>
                 </div>

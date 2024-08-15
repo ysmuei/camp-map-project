@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>campMap</title>
+    <link rel="stylesheet" href="myreset.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="./camp.css" />
+    <script src="camp.js" type="module" defer></script>
+    <script
+      type="text/javascript"
+      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4ce88b485452fa21ec4bee5d398422d6"
+    ></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="sec">
+        <div class="inner">
+          <h1>CAMP</h1>
+
+          <div class="inputCon">
+            <input
+              id="search"
+              placeholder="캠핑장 이름을 검색해주세요"
+              type="text"
+            />
+            <label for="search"></label>
+            <a class="searchIcon"><img src="./img/search1.svg" alt="검색" /></a>
+          </div>
+          <!-- 마커 클릭시 정보 출력. start-->
+          <div id="contents" hidden class="contents">
+            <h2 id="campName" class="campName">따보캠핑장</h2>
+
+            <div id="introCon" class="introCon">
+              <div class="introImg"><img id="campImg" src="" alt="" /></div>
+              <div class="introContent">
+                <p class="topText" id="topText">
+                  강원도 춘천시 남면 가옹개길 52-9
+                </p>
+                <div class="bottomTextCon">
+                  <p class="bottomText" id="bottomText">
+                    아웃오브파트는 강원도 춘천시 남면에 자리했다.
+                    서울양양고속도로 강촌IC에서 엘리시안강촌 방면으로 30분가량
+                    달리면 도착한다. 이곳은 북한강 변의 수려한 풍광을 배경으로
+                    캐러밴 40대가 들어찼다.
+                  </p>
+                </div>
+              </div>
+              <a
+                class="introBtn"
+                id="introBtn"
+                href="http://forestcamping.net"
+                target="_blank"
+              ></a>
+            </div>
+
+            <div id="info" class="info">
+              <div class="homepage">
+                <div class="homepageInfo">
+                  <i><img src="./img/homeIcon.svg" alt="homeIcon" /></i>
+                  <p class="infoText">홈페이지</p>
+                </div>
+                <div class="homepageBtn">
+                  <a
+                    id="siteArr"
+                    href="http://forestcamping.net"
+                    target="_blank"
+                    ><i id="caravan" class="fa-solid fa-caravan fa-lg"></i
+                  ></a>
+                </div>
+              </div>
+              <div class="current">
+                <i><img src="./img/timeIcon.svg" alt="timeIcon" /></i>
+                <p class="infoText">현재운영여부</p>
+                <p id="manageSttus" style="color: #0b75ad; font-weight: bold">
+                  운영중
+                </p>
+              </div>
+              <div class="road">
+                <div class="roadInfo">
+                  <i><img src="./img/locationIcon.svg" alt="locationIcon" /></i>
+                  <p class="infoText">오시는 길</p>
+                </div>
+                <div class="roadText">
+                  <p id="roadInfoText" style="color: #405966">
+                    서울-양양 고속도로 이용 시 동홍천 IC - 삼포2길 - 구룡령로 -
+                    율전삼거리 우회전 - 창촌삼거리 좌회전 - 샘골 휴게소
+                    영동고속도로 이용 시 속사IC - 운두령 - 창촌삼거리 우회전 -
+                    샘골휴게소 평창IC - 봉평방면 - 보래령터널 - 자운교차로
+                    좌회전 - 창촌삼거리 우회전 - 샘골휴게소내용
+                  </p>
+                </div>
+                <div class="toggleButton">
+                  <i class="arrowIcon"
+                    ><img src="./img/arrow.svg" alt="화살표 아이콘"
+                  /></i>
+                </div>
+              </div>
+              <div class="reservation">
+                <i><img src="./img/reserveIcon.svg" alt="reserveIcon" /></i>
+                <p class="infoText">예약방법</p>
+                <p id="resveCl" style="color: #0b75ad; font-weight: bold">
+                  온라인실시간예약
+                </p>
+              </div>
+              <div class="facilities">
+                <div class="facilitiesInfo">
+                  <i><img src="./img/facilIcon.svg" alt="facilIcon" /></i>
+                  <p class="infoText">내부시설</p>
+                </div>
+                <div class="facilText">
+                  <p id="facilInfoText" class="facilInfoText">
+                    침대,TV,에어컨,냉장고,난방기구,취사도구,내부화장실, 강아지
+                    풀장
+                  </p>
+                </div>
+                <div class="toggleFacilButton">
+                  <i class="arrowFacilIcon"
+                    ><img src="./img/arrow.svg" alt="arrowFacilIcon"
+                  /></i>
+                </div>
+              </div>
+              <div class="pet">
+                <i><img src="./img/petIcon.svg" alt="petIcon" /></i>
+                <p class="infoText">애완견가능여부</p>
+                <p id="pet" style="font-weight: bold">가능</p>
+              </div>
+            </div>
+          </div>
+          <!-- 마커 클릭시 정보 출력.end -->
+          <div id="listCon" class="listCon">
+            <ul id="lists" class="lists">
+              <li class="list">
+                <div class="listContent">
+                  <div class="listImg">
+                    <img src="./img/camp2.svg" alt="기본이미지" />
+                  </div>
+                  <div class="listInfos">
+                    <div class="listTitle">
+                      <p>칠갑산 오토캠핑장</p>
+                    </div>
+                    <div class="listInfo">
+                      <p>주소</p>
+                      <p>운영중</p>
+                      <p>반려견 : 가능</p>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div id="map" class="map"></div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,435 @@
+.main {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  position: relative;
+}
+
+.map {
+  flex-grow: 1;
+  height: 100%;
+}
+
+.speech-bubble-container {
+  position: relative;
+}
+
+.speech-bubble {
+  position: relative;
+  background: #ffffff;
+  top: -70px;
+  border-radius: .4em;
+  padding: 10px;
+  border: 1px solid #0B75AD;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.speech-bubble:after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  /* 상위 요소의 끝부분에 삼각형을 위치시킵니다 */
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 15px solid transparent;
+  /* 삼각형의 크기와 투명한 부분 설정 */
+  border-top-color: #ffffff;
+  /* 삼각형의 배경색 설정 */
+  border-top: 15px solid #0B75AD;
+  /* 삼각형의 테두리 색상 설정 */
+  margin-left: -15px;
+  /* 삼각형을 중앙 정렬 */
+  margin-bottom: -15px;
+  /* 삼각형의 위치 조정 */
+}
+
+/* 사이드바 요소들 */
+
+.sec {
+  width: 450px;
+  height: 100vh;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-right: 1.5px solid rgba(111, 111, 111, 0.4);
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.inner {
+  max-width: 400px;
+  width: calc(100% - 4rem);
+  margin: 30px auto;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  padding: 1rem 0.5rem;
+}
+
+/* input */
+
+.inputCon {
+  position: relative;
+  width: 100%;
+  margin-top: 10px;
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: centers;
+  border-radius: 12px;
+  border: 2px solid #A0DEFF;
+  outline: none;
+  background-color: #F7FCFF;
+  box-shadow: 1px 1px 5px rgb(119, 119, 119);
+}
+
+.inputCon>input {
+  flex: 1;
+  height: 30px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-size: 1rem;
+}
+
+.inputCon>.searchIcon {
+  position: absolute;
+  right: 5px;
+  top: 12px;
+  width: 40px;
+  height: 30px;
+}
+
+/* contents */
+
+.contents {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.campName {
+  font-size: 22px;
+  font-weight: bold;
+  padding: 1rem;
+}
+
+.introCon {
+  width: 100%;
+  display: flex;
+  height: 150px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 1px 1px 5px rgb(119, 119, 119);
+  transition: .3s;
+}
+
+.introCon:hover {
+  scale: 102%;
+}
+
+.introCon .introBtn {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.introCon>.introImg {
+  height: 100%;
+  width: 150px;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.introCon .introImg img {
+  height: 100%;
+  width: auto;
+  display: block;
+}
+
+.introCon>.introContent {
+  flex: 1;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.introContent>.topText {
+  font-weight: bold;
+  color: #04101C;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.introContent>.bottomTextCon {
+  width: 100%;
+  height: 90px;
+  overflow: hidden;
+}
+
+.introContent .bottomText {
+  font-size: 11px;
+  color: #405966;
+  line-height: 1.4em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+}
+
+
+
+.info {
+  width: 100%;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  border: 3px solid red;
+  overflow-y: auto;
+}
+
+.info .infoText {
+  font-weight: bold;
+  margin: 0 0.5rem;
+
+}
+
+.homepage {
+  display: flex;
+  margin: 1rem 0;
+  align-items: center;
+}
+
+.homepage>.homepageBtn {
+  display: flex;
+  align-items: center;
+  width: 200px;
+  height: 30px;
+}
+
+@keyframes moveRight {
+  0% {
+    transform: translateX(10px);
+    scale: 100%;
+  }
+
+  30% {
+    scale: 110%;
+  }
+
+  50% {
+    scale: 100%;
+  }
+
+  70% {
+    scale: 110%;
+  }
+
+  100% {
+    scale: 100%;
+    transform: translateX(100px);
+    /* 원하는 만큼 이동할 거리 설정 */
+  }
+}
+
+#siteArr {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 160px;
+  border-bottom: 4px solid #405966;
+  border-radius: 2px;
+}
+
+#caravan {
+  display: inline-block;
+  animation: moveRight 6s ease-in infinite;
+}
+
+#caravan:hover {
+  color: #0B75AD;
+}
+
+.homepage>.homepageInfo {
+  display: flex;
+}
+
+.current {
+  display: flex;
+  margin: 1rem 0;
+}
+
+/* 오시는길 */
+
+.road {
+  display: flex;
+  margin: 1rem 0;
+}
+
+.road>.roadInfo {
+  display: flex;
+}
+
+.road>.roadInfo>p {
+  white-space: nowrap;
+}
+
+.road .roadText {
+  width: 70%;
+  height: 100%;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.road .roadText>p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  line-height: 110%;
+}
+
+.roadText>p.expanded {
+  display: flex;
+}
+
+.toggleButton {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.arrowIcon {
+  font-size: 1.5rem;
+  transition: transform 0.5s ease;
+}
+
+.arrowIcon.rotated {
+  transform: rotateX(180deg);
+}
+
+/*  */
+
+.reservation {
+  display: flex;
+  margin: 1rem 0;
+}
+
+.facilities {
+  display: flex;
+  margin: 1rem 0;
+}
+
+.facilities>.facilitiesInfo {
+  display: flex;
+}
+
+.facilities>.facilitiesInfo>p {
+  white-space: nowrap;
+}
+
+.facilities>.facilText {
+  overflow: hidden;
+}
+
+.facilities .facilInfoText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #405966;
+  cursor: pointer;
+}
+
+.facilities .facilInfoText.clicked {
+  white-space: wrap;
+}
+
+.toggleFacilButton {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  cursor: pointer;
+}
+
+.arrowFacilIcon {
+  font-size: 1.5rem;
+  transition: transform 0.5s ease;
+}
+
+.arrowFacilIcon.rotated {
+  transform: rotateX(180deg);
+}
+
+.pet {
+  display: flex;
+  margin: 1rem 0;
+}
+
+/* listCon */
+.listCon {
+  width: 100%;
+  height: 50vh;
+  margin-top: 20px;
+}
+
+.list {
+  width: 100%;
+  height: 120px;
+  margin: 2rem 0;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 1px 1px 5px rgb(119, 119, 119);
+}
+
+.listContent {
+  display: flex;
+  height: 100%;
+
+}
+
+.listImg {
+  height: 100%;
+  width: 130px;
+  border: 3px solid yellow;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.listImg>img {
+  width: 80%;
+}
+
+.listInfos {
+  flex-grow: 1;
+  border: 3px solid green;
+}
+
+.listTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+  height: 30px;
+  border: 2px solid purple;
+}
+
+.listTitle>p {
+  font-weight: bold;
+}
+
+.listInfo * {
+  border: 1px solid red;
+}
+
+.listInfo {
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 2px;
+}

@@ -1,3 +1,0 @@
-const KAKAO_KEY =
-  "bZCL8pFU9sMI0TbxTc6mRLEJ1zWJb05U4ot2RWwXgX8MkAm1YF3YB3unrbZqClIiT7MaLwt1yS5NS6I7zkcpxw==";
-export default KAKAO_KEY;

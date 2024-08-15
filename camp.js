@@ -1,4 +1,4 @@
-import KAKAO_KEY from "./apiKey.js";
+import KAKAO_KEY from "./config/apiKey.js";
 const API_KEY = KAKAO_KEY;
 
 const url = new URL(

@@ -1,3 +1,10 @@
+body {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
 .main {
   height: 100vh;
   width: 100vw;
@@ -48,8 +55,10 @@
 
 .sec {
   width: 450px;
-  height: 100vh;
+  height: 100%;
+  border: 3px solid green;
   background-color: white;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -59,14 +68,19 @@
 
 .inner {
   max-width: 400px;
+  height: 100%;
   width: calc(100% - 4rem);
   margin: 30px auto;
 }
 
-h1 {
-  font-size: 2rem;
-  font-weight: bold;
-  padding: 1rem 0.5rem;
+.logo {
+  width: 250px;
+  margin-bottom: 10px;
+}
+
+.logoClick {
+  width: 100%;
+  height: 100%;
 }
 
 /* input */
@@ -97,15 +111,22 @@ h1 {
 
 .inputCon>.searchIcon {
   position: absolute;
+  cursor: pointer;
   right: 5px;
   top: 12px;
   width: 40px;
   height: 30px;
+  transition: .2s;
+}
+
+.inputCon>.searchIcon:hover {
+  scale: 105%;
 }
 
 /* contents */
 
 .contents {
+  /* display: none; */
   width: 100%;
   margin-top: 20px;
 }
@@ -172,12 +193,12 @@ h1 {
 }
 
 .introContent .bottomText {
-  font-size: 11px;
+  font-size: 13px;
   color: #405966;
   line-height: 1.4em;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 6;
+  -webkit-line-clamp: 5;
 }
 
 
@@ -187,7 +208,6 @@ h1 {
   height: 50vh;
   display: flex;
   flex-direction: column;
-  border: 3px solid red;
   overflow-y: auto;
 }
 
@@ -372,19 +392,37 @@ h1 {
 
 /* listCon --------------------------------------*/
 .listCon {
+  display: none;
   width: 100%;
-  height: 50vh;
+  height: calc(100vh - 270px);
+  overflow-y: auto;
   margin-top: 20px;
 }
 
+.listCon::-webkit-scrollbar {
+  width: 5px;
+}
+
+.listCon::-webkit-scrollbar-thumb {
+  background-color: #D5D5D5;
+  border-radius: 12px;
+}
+
+.listCon::-webkit-scrollbar-track {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px white;
+}
+
 .list {
-  width: 100%;
+  width: 96%;
   height: 120px;
-  margin: 2rem 0;
+  margin: 1rem 0 1rem 0.5rem;
   overflow: hidden;
   border-radius: 12px;
   box-shadow: 1px 1px 5px rgb(119, 119, 119);
   transition: 0.3s;
+  cursor: pointer;
 }
 
 .listPet {

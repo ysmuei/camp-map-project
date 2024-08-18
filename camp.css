@@ -418,6 +418,7 @@ body {
   width: 96%;
   height: 120px;
   margin: 1rem 0 1rem 0.5rem;
+  display: flex;
   overflow: hidden;
   border-radius: 12px;
   box-shadow: 1px 1px 5px rgb(119, 119, 119);
@@ -447,13 +448,16 @@ body {
 
 .listContent {
   display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100%;
-
+  width: 100%;
 }
 
 .listImg {
   height: 100%;
-  width: 130px;
+  width: 140px;
+  border: 1px solid red;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -465,9 +469,11 @@ body {
   background-size: contain;
 }
 
-.listInfos {
-  flex: 1;
+.listImg>img.basic {
+  height: 70%;
 }
+
+.listInfos {}
 
 .listTitle {
   width: 260px;

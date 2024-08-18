@@ -4,7 +4,7 @@ const KAKAO_API_KEY = config.KAKAO_KEY;
 
 const script = document.createElement("script");
 script.type = "text/javascript";
-script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_API_KEY}&autoload=false`;
+script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_API_KEY}&autoload=false`;
 document.head.appendChild(script);
 
 script.onload = () => {
@@ -40,6 +40,7 @@ script.onload = () => {
       let direction = el.direction || el.addr;
       let facilInfoText = el.facilInfoText || "홈페이지 참고";
       let resveCl = el.resveCl || "홈페이지 참고";
+      let campImg = el.imgUrl ? el.imgUrl : "./img/basic_camp.svg";
       el.manageSttus.includes("휴장")
         ? ($manageSttus.style.color = "#ED5959")
         : ($manageSttus.style.color = "#0b75ad");
@@ -49,7 +50,7 @@ script.onload = () => {
 
       $introBtn.href = el.homepage;
       $campName.textContent = el.title;
-      $campImg.src = el.imgUrl;
+      $campImg.src = campImg;
       $topText.textContent = el.addr;
       $bottomText.textContent = content;
 
@@ -61,16 +62,20 @@ script.onload = () => {
       $pet.textContent = el.pet;
       console.log("el", el);
 
-      $introBtn.addEventListener("click", () => {
-        if (el.homepage == "") {
+      // 기존 이벤트 리스너 제거
+      $introBtn.removeEventListener("click", siteBtnClick);
+      $siteArr.removeEventListener("click", siteBtnClick);
+
+      // 새로 이벤트 리스너 추가 (once 옵션 사용)
+      $introBtn.addEventListener("click", siteBtnClick, { once: true });
+      $siteArr.addEventListener("click", siteBtnClick, { once: true });
+
+      function siteBtnClick() {
+        if (!el.homepage) {
           alert("홈페이지를 찾을 수 없습니다..!");
+          event.preventDefault();
         }
-      });
-      $siteArr.addEventListener("click", () => {
-        if (el.homepage == "") {
-          alert("홈페이지를 찾을 수 없습니다..!");
-        }
-      });
+      }
     };
 
     // 이름과 위치를 담을 변수 선언.
@@ -214,7 +219,7 @@ script.onload = () => {
     };
 
     const renderList = (el) => {
-      const listImg = el.imgUrl == "" ? "./img/camp2.svg" : el.imgUrl;
+      const listImg = el.imgUrl == "" ? "./img/basic_camp.svg" : el.imgUrl;
       const $listCreate = document.createElement("li");
       const listColor = "";
       // if (el.pet.includes("불")) {

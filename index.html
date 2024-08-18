@@ -43,12 +43,13 @@
             /></a>
           </div>
           <!-- 캠핑장 검색 -->
-          <!-- 첫 화면 -->
-          <div id="loadingPage" class="loadingPage"></div>
-          <!-- 첫 화면 -->
-
+          <div id="spinner" class="spinner">
+            <span><img src="./img/spin1.png" alt="Spinner1" /></span>
+            <span><img src="./img/spin2.png" alt="Spinner2" /></span>
+            <span><img src="./img/spin3.png" alt="Spinner3" /></span>
+          </div>
           <!-- 마커 클릭시 정보 출력. start-->
-          <div id="contents" class="contents contentsDisplay">
+          <div id="contents" hidden class="contents">
             <h2 id="campName" class="campName">따보캠핑장</h2>
 
             <div id="introCon" class="introCon">
@@ -150,29 +151,8 @@
           <!-- 마커 클릭시 정보 출력.end -->
 
           <!-- 캠핑장 리스트. start -->
-          <div id="listCon" class="listCon">
-            <ul id="lists" class="lists">
-              <li class="list">
-                <div class="listContent">
-                  <div class="listImg">
-                    <img src="./img/camp2.svg" alt="기본이미지" />
-                  </div>
-
-                  <div class="listInfos">
-                    <div class="listTitle">
-                      <p id="listTitle">칠갑산 오토캠핑장</p>
-                    </div>
-                    <div class="listInfo">
-                      <p>주소</p>
-                      <p>운영중</p>
-                      <p class="listPet">
-                        반려견 : <span class="listPetText">가능</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            </ul>
+          <div id="listCon" hidden class="listCon">
+            <ul id="lists" class="lists"></ul>
           </div>
           <!-- 캠핑장 리스트. end -->
         </div>

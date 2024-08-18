@@ -34,7 +34,14 @@ script.onload = () => {
     const $pet = document.getElementById("pet");
     const $contents = document.getElementById("contents");
     const $listCon = document.getElementById("listCon");
+    const spinner = document.getElementById("spinner");
 
+    const showSpinner = () => {
+      spinner.style.display = "block"; // 스피너 표시
+    };
+    const hideSpinner = () => {
+      spinner.style.display = "none"; // 스피너 숨기기
+    };
     const renderSide = (el) => {
       let content = el.intro || "내용 준비중...";
       let direction = el.direction || el.addr;
@@ -60,7 +67,6 @@ script.onload = () => {
       $resveCl.textContent = resveCl;
       $facilInfoText.textContent = facilInfoText;
       $pet.textContent = el.pet;
-      console.log("el", el);
 
       // 기존 이벤트 리스너 제거
       $introBtn.removeEventListener("click", siteBtnClick);
@@ -73,12 +79,13 @@ script.onload = () => {
       function siteBtnClick() {
         if (!el.homepage) {
           alert("홈페이지를 찾을 수 없습니다..!");
-          event.preventDefault();
+          el.preventDefault();
         }
       }
     };
 
     // 이름과 위치를 담을 변수 선언.
+    let firstList = []; // 가장 가까운 20개의 캠핑장 정보를 저장할 배열
     let positions = [];
     let map;
     let markers = []; // 모든 마커를 저장할 배열
@@ -95,6 +102,40 @@ script.onload = () => {
       };
 
       map = new kakao.maps.Map(container, options); // 지도 생성 및 객체 리턴
+
+      function getDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371; // Earth radius in kilometers
+        const dLat = (lat2 - lat1) * (Math.PI / 180);
+        const dLon = (lon2 - lon1) * (Math.PI / 180);
+        const a =
+          0.5 -
+          Math.cos(dLat) / 2 +
+          (Math.cos(lat1 * (Math.PI / 180)) *
+            Math.cos(lat2 * (Math.PI / 180)) *
+            (1 - Math.cos(dLon))) /
+            2;
+        return R * 2 * Math.asin(Math.sqrt(a));
+      }
+
+      function getClosestCampsites(
+        campsites,
+        currentLat,
+        currentLng,
+        count = 20
+      ) {
+        return campsites
+          .map((campsite) => ({
+            ...campsite,
+            distance: getDistance(
+              currentLat,
+              currentLng,
+              campsite.latlng.getLat(),
+              campsite.latlng.getLng()
+            ),
+          }))
+          .sort((a, b) => a.distance - b.distance)
+          .slice(0, count);
+      }
 
       // 마커 초기화.
       const deleteMaker = () => {
@@ -163,8 +204,17 @@ script.onload = () => {
         renderMarkers();
       };
 
+      const renderFirstList = () => {
+        // `firstList`의 항목들을 렌더링
+        $lists.innerHTML = ""; // 기존 리스트 초기화
+        firstList.forEach((el) => {
+          renderList(el);
+        });
+      };
+
       const fetchMaps = async () => {
         try {
+          showSpinner();
           url.searchParams.set("serviceKey", CAMP_API_KEY);
           url.searchParams.set("numOfRows", 1000);
 
@@ -172,8 +222,18 @@ script.onload = () => {
           const data = await res.json();
           const items = await data.response.body.items.item;
           positionList(items);
+          // 현재 위치를 기준으로 가장 가까운 20개의 캠핑장 정보
+          const closestCampsites = getClosestCampsites(
+            positions,
+            latitude,
+            longitude
+          );
+          firstList = closestCampsites;
+          renderFirstList(); // '내 주변 캠핑장' 목록에 캠핑장 추가
         } catch (error) {
           console.log(error);
+        } finally {
+          hideSpinner(); // 데이터 로딩 완료 시 스피너 숨기기
         }
       };
       fetchMaps();
@@ -186,7 +246,6 @@ script.onload = () => {
     const $listPetText = document.querySelector("listPetText");
 
     const listClick = (el) => {
-      console.log("List click event:", el);
       // 지도를 해당 캠핑장 위치로 이동
       map.setCenter(el.latlng);
       map.setLevel(8);
@@ -221,13 +280,16 @@ script.onload = () => {
     const renderList = (el) => {
       const listImg = el.imgUrl == "" ? "./img/basic_camp.svg" : el.imgUrl;
       const $listCreate = document.createElement("li");
-      const listColor = "";
-      // if (el.pet.includes("불")) {
-      //   listColor = "listPetTextRed";
-      // } else {
-      //   listColor = "listPetTextGreen";
-      // }
-
+      let listCurr = "";
+      let listColor = "";
+      if (el.pet.includes("불")) {
+        listColor = "listPetTextRed";
+      } else {
+        listColor = "listPetTextGreen";
+      }
+      el.manageSttus.includes("휴장")
+        ? (listCurr = "listCurrRed")
+        : (listCurr = "listCurrgreen");
       $listCreate.classList.add("list");
       $listCreate.innerHTML = `
                   <div class="listContent">
@@ -240,9 +302,9 @@ script.onload = () => {
                       </div>
                       <div class="listInfo">
                         <p>${el.addr}</p>
-                        <p>상태 : ${el.manageSttus}</p>
+                        <p>상태 : <span class="${listCurr}">${el.manageSttus}</span></p>
                        
-                        <p class="listPet">반려견 : <span class=${listColor}>${el.pet}</span></p>
+                        <p class="listPet">반려견 : <span class="${listColor}">${el.pet}</span></p>
                       </div>
                     </div>
                   </div>
@@ -280,6 +342,7 @@ script.onload = () => {
       filterSearch();
       changeList();
     });
+
     // ------------- 아래 화살표 --------------------
     $roadInfoText.addEventListener("click", () => {
       $roadInfoText.classList.toggle("expanded");

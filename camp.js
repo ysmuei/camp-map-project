@@ -1,8 +1,6 @@
 import config from "./config/apiKey.js";
-// const CAMP_API_KEY = config.CAMP_KEY;
-// const KAKAO_API_KEY = config.KAKAO_KEY;
-const CAMP_API_KEY = process.env.CAMP_KEY;
-const KAKAO_API_KEY = process.env.KAKAO_KEY;
+const CAMP_API_KEY = config.CAMP_KEY;
+const KAKAO_API_KEY = config.KAKAO_KEY;
 
 const script = document.createElement("script");
 script.type = "text/javascript";

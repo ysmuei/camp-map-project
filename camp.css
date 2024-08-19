@@ -23,12 +23,16 @@ body {
 
 .speech-bubble {
   position: relative;
-  background: #ffffff;
+  background: #F7FCFF;
   top: -70px;
   border-radius: .4em;
   padding: 10px;
-  border: 1px solid #0B75AD;
+  border: 2px solid #0B75AD;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.speech-bubble>p {
+  font-weight: bold;
 }
 
 .speech-bubble:after {
@@ -36,7 +40,7 @@ body {
   position: absolute;
   top: 100%;
   /* 상위 요소의 끝부분에 삼각형을 위치시킵니다 */
-  left: 50%;
+  left: 51%;
   width: 0;
   height: 0;
   border: 15px solid transparent;
@@ -56,7 +60,6 @@ body {
 .sec {
   width: 450px;
   height: 100%;
-  border: 3px solid green;
   background-color: white;
   overflow: hidden;
   display: flex;
@@ -126,20 +129,6 @@ body {
   scale: 105%;
 }
 
-/* firstPage */
-.firstPage {
-  margin-top: 20px;
-  width: 100%;
-  height: 50vh;
-  border: 1px solid green;
-}
-
-.firstPage>h2 {
-  margin-left: 10px;
-  font-size: 24px;
-  font-weight: bold;
-}
-
 /* contents */
 
 .contents {
@@ -182,6 +171,10 @@ body {
   width: 150px;
   background-repeat: no-repeat;
   overflow: hidden;
+}
+
+.basic {
+  padding: 1rem;
 }
 
 .introCon .introImg img {
@@ -276,18 +269,19 @@ body {
   display: flex;
   align-items: center;
   height: 100%;
-  width: 160px;
+  width: 150px;
   border-bottom: 4px solid #405966;
   border-radius: 2px;
+}
+
+#siteArr:hover #caravan {
+  color: #0B75AD;
+  animation-play-state: paused;
 }
 
 #caravan {
   display: inline-block;
   animation: moveRight 6s ease-in infinite;
-}
-
-#caravan:hover {
-  color: #0B75AD;
 }
 
 .homepage>.homepageInfo {
@@ -502,9 +496,6 @@ body {
   cursor: pointer;
 }
 
-.listPet {
-  display: inline;
-}
 
 .listPetTextRed {
   font-weight: bold;
@@ -540,10 +531,15 @@ body {
 
 .listImg {
   height: 100%;
-  width: 140px;
+  width: 120px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.listInfos {
+  width: 70%;
+  height: 100%;
 }
 
 .listImg>img {
@@ -557,7 +553,7 @@ body {
 }
 
 .listTitle {
-  width: 260px;
+  width: 250px;
   display: flex;
   align-items: center;
   padding: 0 0.5rem;

@@ -42,12 +42,20 @@ script.onload = () => {
     const hideSpinner = () => {
       spinner.style.display = "none"; // 스피너 숨기기
     };
+
     const renderSide = (el) => {
+      console.log(el);
+
       let content = el.intro || "내용 준비중...";
       let direction = el.direction || el.addr;
       let facilInfoText = el.facilInfoText || "홈페이지 참고";
       let resveCl = el.resveCl || "홈페이지 참고";
       let campImg = el.imgUrl ? el.imgUrl : "./img/basic_camp.svg";
+      if (!el.imgUrl) {
+        $campImg.classList.add("basic");
+      } else {
+        $campImg.classList.remove("basic");
+      }
       el.manageSttus.includes("휴장")
         ? ($manageSttus.style.color = "#ED5959")
         : ($manageSttus.style.color = "#0b75ad");
@@ -68,24 +76,24 @@ script.onload = () => {
       $facilInfoText.textContent = facilInfoText;
       $pet.textContent = el.pet;
 
+      // 새로 이벤트 리스너 추가 (once 옵션 사용)
+      const siteBtnClick = (event) => {
+        if (!el.homepage) {
+          alert("홈페이지를 찾을 수 없습니다..!");
+          event.preventDefault();
+          return;
+        }
+      };
       // 기존 이벤트 리스너 제거
       $introBtn.removeEventListener("click", siteBtnClick);
       $siteArr.removeEventListener("click", siteBtnClick);
 
-      // 새로 이벤트 리스너 추가 (once 옵션 사용)
       $introBtn.addEventListener("click", siteBtnClick, { once: true });
       $siteArr.addEventListener("click", siteBtnClick, { once: true });
-
-      function siteBtnClick() {
-        if (!el.homepage) {
-          alert("홈페이지를 찾을 수 없습니다..!");
-          el.preventDefault();
-        }
-      }
     };
 
     // 이름과 위치를 담을 변수 선언.
-    let firstList = []; // 가장 가까운 20개의 캠핑장 정보를 저장할 배열
+    let firstList = []; // 가까운 20개의 캠핑장 정보를 저장할 배열
     let positions = [];
     let map;
     let markers = []; // 모든 마커를 저장할 배열
@@ -103,8 +111,37 @@ script.onload = () => {
 
       map = new kakao.maps.Map(container, options); // 지도 생성 및 객체 리턴
 
+      // 지도 레벨에 따라 마커 이미지 업데이트 함수
+      const updateMarkerImageBasedOnLevel = () => {
+        const level = map.getLevel();
+        let imageSrc;
+        let imageSize;
+        if (level <= 5) {
+          imageSrc = "./img/camp1.svg"; // 높은 줌 레벨 이미지
+          imageSize = new kakao.maps.Size(25, 25);
+        } else if (level <= 8) {
+          imageSrc = "./img/camp1.svg"; // 높은 줌 레벨 이미지
+          imageSize = new kakao.maps.Size(20, 20);
+        } else if (level <= 11) {
+          imageSrc = "./img/camp_blue.svg"; // 낮은 줌 레벨 이미지
+          imageSize = new kakao.maps.Size(15, 15);
+        } else {
+          imageSrc = "./img/camp_blue.svg"; // 낮은 줌 레벨 이미지
+          imageSize = new kakao.maps.Size(8, 8);
+        }
+        const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+        markers.forEach((marker) => {
+          marker.setImage(markerImage);
+        });
+      };
+
+      // 지도 레벨 변경 이벤트 리스너 추가
+      kakao.maps.event.addListener(map, "zoom_changed", () => {
+        updateMarkerImageBasedOnLevel();
+      });
+
       function getDistance(lat1, lon1, lat2, lon2) {
-        const R = 6371; // Earth radius in kilometers
+        const R = 6371;
         const dLat = (lat2 - lat1) * (Math.PI / 180);
         const dLon = (lon2 - lon1) * (Math.PI / 180);
         const a =
@@ -176,11 +213,12 @@ script.onload = () => {
             }
             renderSide(el);
             currentOverlay.push(customOverlay);
-            map.setCenter(marker.getPosition());
-            map.setLevel(8);
+
+            map.panTo(marker.getPosition());
             customOverlay.setMap(map);
           });
         });
+        updateMarkerImageBasedOnLevel();
       };
 
       const positionList = (items) => {
@@ -214,7 +252,7 @@ script.onload = () => {
 
       const fetchMaps = async () => {
         try {
-          showSpinner();
+          showSpinner(); // 데이터 로딩 스피너 출력.
           url.searchParams.set("serviceKey", CAMP_API_KEY);
           url.searchParams.set("numOfRows", 1000);
 
@@ -229,7 +267,7 @@ script.onload = () => {
             longitude
           );
           firstList = closestCampsites;
-          renderFirstList(); // '내 주변 캠핑장' 목록에 캠핑장 추가
+          renderFirstList(); // 내 주변 캠핑장 목록에 캠핑장 추가
         } catch (error) {
           console.log(error);
         } finally {
@@ -273,7 +311,7 @@ script.onload = () => {
       if (marker) {
         kakao.maps.event.trigger(marker, "click");
       } else {
-        console.log("Marker not found for the given latlng:", el.latlng);
+        console.log("주어진 위치의 마커를 찾을 수 없습니다.:", el.latlng);
       }
     };
 
@@ -334,24 +372,32 @@ script.onload = () => {
 
     $search.addEventListener("keyup", (e) => {
       if (e.key === "Enter") {
+        if ($search.value.trim() == "") {
+          alert("캠핑장을 입력해 주세요!");
+          return;
+        }
         filterSearch();
         changeList();
       }
     });
     document.getElementById("searchIcon").addEventListener("click", () => {
+      if ($search.value.trim() == "") {
+        alert("캠핑장을 입력해 주세요!");
+        return;
+      }
       filterSearch();
       changeList();
     });
 
     // ------------- 아래 화살표 --------------------
-    $roadInfoText.addEventListener("click", () => {
-      $roadInfoText.classList.toggle("expanded");
-      $arrowIcon.classList.toggle("rotated");
-    });
+    // $roadInfoText.addEventListener("click", () => {
+    //   $roadInfoText.classList.toggle("expanded");
+    //   $arrowIcon.classList.toggle("rotated");
+    // });
 
-    $facilInfoText.addEventListener("click", () => {
-      $facilInfoText.classList.toggle("clicked");
-      $arrowFacilIcon.classList.toggle("rotated");
-    });
+    // $facilInfoText.addEventListener("click", () => {
+    //   $facilInfoText.classList.toggle("clicked");
+    //   $arrowFacilIcon.classList.toggle("rotated");
+    // });
   });
 };

@@ -1,6 +1,7 @@
-import config from "./config/apiKey.js";
-const CAMP_API_KEY = config.CAMP_KEY;
-const KAKAO_API_KEY = config.KAKAO_KEY;
+import { CAMP_KEY, KAKAO_KEY } from "./apiKey.js";
+
+const CAMP_API_KEY = CAMP_KEY;
+const KAKAO_API_KEY = KAKAO_KEY;
 
 const script = document.createElement("script");
 script.type = "text/javascript";
@@ -76,7 +77,6 @@ script.onload = () => {
       $facilInfoText.textContent = facilInfoText;
       $pet.textContent = el.pet;
 
-      // 새로 이벤트 리스너 추가 (once 옵션 사용)
       const siteBtnClick = (event) => {
         if (!el.homepage) {
           alert("홈페이지를 찾을 수 없습니다..!");
@@ -84,6 +84,7 @@ script.onload = () => {
           return;
         }
       };
+
       // 기존 이벤트 리스너 제거
       $introBtn.removeEventListener("click", siteBtnClick);
       $siteArr.removeEventListener("click", siteBtnClick);

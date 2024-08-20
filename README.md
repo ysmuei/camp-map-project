@@ -1,7 +1,9 @@
 # Open API-project-GOCAMPING
 https://loca-camp.netlify.app
 한국관광공사_고캠핑API + Kakao Maps API 를 결합한 캠핑맵 사이트
-![캠핑맵 스크린샷](img/siteImage.png)
+
+<img src="img/siteImage.png" alt="캠핑맵 스크린샷" style="width: 100%; max-width: 600px;"/>
+
 ## 프로젝트 소개
 
 이 프로젝트는 한국관광공사의 고캠핑API와 Kakao Maps API를 결합하여 지역별 캠핑 정보를 제공하는 웹사이트입니다. 사용자는 캠핑장 정보를 지도에서 시각적으로 확인하고, 상세한 캠핑장 정보를 사이드바를 통해 얻을 수 있습니다.

@@ -1,4 +1,4 @@
-# Open API-project-GOCAMPING
+# Open API-Project-GOCAMPING
 https://loca-camp.netlify.app  
 한국관광공사_고캠핑API + Kakao Maps API 를 결합한 캠핑맵 사이트
 

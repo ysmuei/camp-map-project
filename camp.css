@@ -189,9 +189,10 @@ body {
 
 .introContent>.topText {
   font-weight: bold;
+  line-height: 130%;
   color: #04101C;
   font-size: 15px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .introContent>.bottomTextCon {
@@ -458,7 +459,7 @@ body {
 
 .list {
   width: 96%;
-  height: 105px;
+  height: 108px;
   margin: 1rem 0 1rem 0.5rem;
   display: flex;
   overflow: hidden;
@@ -471,21 +472,25 @@ body {
 
 .listPetTextRed {
   font-weight: bold;
+  font-size: 15px;
   color: #ED5959;
 }
 
 .listPetTextGreen {
   font-weight: bold;
+  font-size: 15px;
   color: #2AC182;
 }
 
 .listCurrRed {
   font-weight: bold;
+  font-size: 15px;
   color: #ED5959;
 }
 
 .listCurrgreen {
   font-weight: bold;
+  font-size: 15px;
   color: #0b75ad;
 }
 
@@ -528,8 +533,8 @@ body {
   width: 250px;
   display: flex;
   align-items: center;
-  padding: 0 0.5rem;
-  height: 30px;
+  padding: 0.5rem 0.5rem 0.2rem 0.5rem;
+
 }
 
 .listTitle>p {
@@ -550,5 +555,13 @@ body {
 }
 
 .listInfo p:nth-of-type(1) {
+  font-size: 14px;
+  line-height: 120%;
+  color: #535353;
+}
+
+.listInfo p:nth-of-type(2),
+.listInfo p:nth-of-type(3) {
   font-size: 15px;
+  font-weight: 400;
 }

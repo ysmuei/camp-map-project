@@ -16,26 +16,15 @@ script.onload = () => {
 
     let container = document.getElementById("map"); // 지도를 담을 영역의 DOM 레퍼런스
     let currentOverlay = [];
-    // ------------------------------------------------------------
-    const $roadInfoText = document.getElementById("roadInfoText");
-    const $arrowIcon = document.querySelector(".arrowIcon");
-    const $facilInfoText = document.getElementById("facilInfoText");
-    const $arrowFacilIcon = document.querySelector(".arrowFacilIcon");
-    // --------------------------------------------------------------
-    const $campName = document.getElementById("campName"); //캠핑장 이름
-    const $campImg = document.getElementById("campImg"); // 캠핌장 사진
-    const $topText = document.getElementById("topText"); // 캠핑장 주소
-    const $bottomText = document.getElementById("bottomText"); // 캠핑장 소개
-    const $introBtn = document.getElementById("introBtn"); // 캠핑장 클릭시 홈페이지 이동.
-    const $siteArr = document.getElementById("siteArr");
-    const $manageSttus = document.getElementById("manageSttus"); // 운영상태
-    // const $roadInfoText = document.getElementById("roadInfoText"); // 오시는 길
-    const $resveCl = document.getElementById("resveCl"); //예약방법
-    // const $facilInfoText = document.getElementById("facilInfoText"); // 내부시설
-    const $pet = document.getElementById("pet");
     const $contents = document.getElementById("contents");
     const $listCon = document.getElementById("listCon");
     const spinner = document.getElementById("spinner");
+
+    // 이름과 위치를 담을 변수 선언.
+    let firstList = []; // 가까운 20개의 캠핑장 정보를 저장할 배열
+    let positions = []; // 모든 마커들의 위치와 정보를 담을 변수
+    let map;
+    let markers = []; // 모든 마커를 저장할 배열
 
     const showSpinner = () => {
       spinner.style.display = "block"; // 스피너 표시
@@ -44,60 +33,248 @@ script.onload = () => {
       spinner.style.display = "none"; // 스피너 숨기기
     };
 
+    //   $contents.innerHTML = ``;
+    //   // 마커요소나 리스트 선택시 화면 표시.
+    //   console.log(el);
+
+    //   let $contentDiv = document.createElement("div");
+
+    //   let content = el.intro || "내용 준비중...";
+    //   let direction = el.direction || el.addr;
+    //   let facilInfoText = el.facilInfoText || "홈페이지 참고";
+    //   let resveCl = el.resveCl || "홈페이지 참고";
+    //   let campImg = el.imgUrl ? el.imgUrl : "./img/basic_camp.svg";
+    //   if (!el.imgUrl) {
+    //     $campImg.classList.add("basic");
+    //   } else {
+    //     $campImg.classList.remove("basic");
+    //   }
+    //   el.manageSttus.includes("휴장")
+    //     ? ($manageSttus.style.color = "#ED5959")
+    //     : ($manageSttus.style.color = "#0b75ad");
+    //   el.pet.includes("불")
+    //     ? ($pet.style.color = "#ED5959")
+    //     : ($pet.style.color = "#2AC182");
+
+    //   // $introBtn.href = el.homepage || "#";
+    //   // $campName.textContent = el.title;
+    //   // $campImg.src = campImg;
+    //   // $topText.textContent = el.addr;
+    //   // $bottomText.textContent = content;
+
+    //   // $siteArr.href = el.homepage;
+    //   // $manageSttus.textContent = el.manageSttus;
+    //   // $roadInfoText.textContent = direction;
+    //   // $resveCl.textContent = resveCl;
+    //   // $facilInfoText.textContent = facilInfoText;
+    //   // $pet.textContent = el.pet;
+
+    //   $contentDiv.innerHTML = `
+    //     <h2 id="campName" class="campName">${el.title}</h2>
+    //           <div id="introCon" class="introCon">
+    //             <div class="introImg">
+    //               <img id="campImg" src=${campImg} alt="" />
+    //             </div>
+    //             <div class="introContent">
+    //               <p class="topText" id="topText">
+    //                 ${el.addr}
+    //               </p>
+    //               <div class="bottomTextCon">
+    //                 <p class="bottomText" id="bottomText">
+    //                   ${content}
+    //                 </p>
+    //               </div>
+    //             </div>
+    //             <a
+    //               class="introBtn"
+    //               id="introBtn"
+    //               href=${el.homepage}
+    //               target="_blank"
+    //             ></a>
+    //           </div>
+
+    //           <div id="info" class="info">
+    //             <div class="homepage">
+    //               <div class="homepageInfo">
+    //                 <i><img src="./img/homeIcon.svg" alt="homeIcon" /></i>
+    //                 <p class="infoText">홈페이지</p>
+    //               </div>
+    //               <div class="homepageBtn">
+    //                 <a
+    //                   id="siteArr"
+    //                   href=${el.homepage}
+    //                   target="_blank"
+    //                   ><i id="caravan" class="fa-solid fa-caravan fa-lg"></i
+    //                 ></a>
+    //               </div>
+    //             </div>
+    //             <div class="current">
+    //               <i><img src="./img/timeIcon.svg" alt="timeIcon" /></i>
+    //               <p class="infoText">현재운영여부</p>
+    //               <p id="manageSttus" style="font-weight: bold">${el.manageSttus}</p>
+    //             </div>
+    //             <div class="road">
+    //               <div class="roadInfo">
+    //                 <i
+    //                   ><img src="./img/locationIcon.svg" alt="locationIcon"
+    //                 /></i>
+    //                 <p class="infoText">오시는 길</p>
+    //               </div>
+    //               <div class="roadText">
+    //                 <p id="roadInfoText" style="color: #405966">
+    //                   ${direction}
+    //                 </p>
+    //               </div>
+    //               <!-- <div class="toggleButton">
+    //                 <i class="arrowIcon"
+    //                   ><img src="./img/arrow.svg" alt="화살표 아이콘"
+    //                 /></i>
+    //               </div> -->
+    //             </div>
+    //             <div class="reservation">
+    //               <i><img src="./img/reserveIcon.svg" alt="reserveIcon" /></i>
+    //               <p class="infoText">예약방법</p>
+    //               <p id="resveCl" style="color: #0b75ad; font-weight: bold">
+    //                 ${resveCl}
+    //               </p>
+    //             </div>
+    //             <div class="facilities">
+    //               <div class="facilitiesInfo">
+    //                 <i><img src="./img/facilIcon.svg" alt="facilIcon" /></i>
+    //                 <p class="infoText">내부시설</p>
+    //               </div>
+    //               <div class="facilText">
+    //                 <p id="facilInfoText" class="facilInfoText">
+    //                   ${facilInfoText}
+    //                 </p>
+    //               </div>
+    //               <!-- <div class="toggleFacilButton">
+    //                 <i class="arrowFacilIcon"
+    //                   ><img src="./img/arrow.svg" alt="arrowFacilIcon"
+    //                 /></i>
+    //               </div> -->
+    //             </div>
+    //             <div class="pet">
+    //               <i><img src="./img/petIcon.svg" alt="petIcon" /></i>
+    //               <p class="infoText">애완견가능여부</p>
+    //               <p id="pet" style="font-weight: bold">${el.pet}</p>
+    //             </div>
+    //           </div>
+    //   `;
+    //   $contents.appendChild($contentDiv);
+    // };
     const renderSide = (el) => {
-      console.log(el);
+      // 기존 내용 초기화
+      $contents.innerHTML = "";
 
-      let content = el.intro || "내용 준비중...";
-      let direction = el.direction || el.addr;
-      let facilInfoText = el.facilInfoText || "홈페이지 참고";
-      let resveCl = el.resveCl || "홈페이지 참고";
-      let campImg = el.imgUrl ? el.imgUrl : "./img/basic_camp.svg";
-      if (!el.imgUrl) {
-        $campImg.classList.add("basic");
-      } else {
-        $campImg.classList.remove("basic");
-      }
-      el.manageSttus.includes("휴장")
-        ? ($manageSttus.style.color = "#ED5959")
-        : ($manageSttus.style.color = "#0b75ad");
-      el.pet.includes("불")
-        ? ($pet.style.color = "#ED5959")
-        : ($pet.style.color = "#2AC182");
+      // 캠핑장 이미지 URL 및 기본 이미지 설정
+      const campImg = el.imgUrl ? el.imgUrl : "./img/basic_camp.svg";
+      const imgClass = el.imgUrl ? "" : "basic";
 
-      $introBtn.href = el.homepage;
-      $campName.textContent = el.title;
-      $campImg.src = campImg;
-      $topText.textContent = el.addr;
-      $bottomText.textContent = content;
+      // 운영 여부 색상 설정
+      const manageSttusColor = el.manageSttus.includes("휴장")
+        ? "#ED5959"
+        : "#0b75ad";
+      // 애완견 가능 여부 색상 설정
+      const petColor = el.pet.includes("불") ? "#ED5959" : "#2AC182";
 
-      $siteArr.href = el.homepage;
-      $manageSttus.textContent = el.manageSttus;
-      $roadInfoText.textContent = direction;
-      $resveCl.textContent = resveCl;
-      $facilInfoText.textContent = facilInfoText;
-      $pet.textContent = el.pet;
+      // 사이드바 내용 설정
+      let $contentDiv = document.createElement("div");
+      $contentDiv.innerHTML = `
+          <h2 id="campName" class="campName">${el.title}</h2>
+          <div id="introCon" class="introCon">
+              <div class="introImg">
+                  <img id="campImg" src="${campImg}" alt="" class="${imgClass}" />
+              </div>
+              <div class="introContent">
+                  <p class="topText" id="topText">${el.addr}</p>
+                  <div class="bottomTextCon">
+                      <p class="bottomText" id="bottomText">${
+                        el.intro || "내용 준비중..."
+                      }</p>
+                  </div>
+              </div>
+              <a class="introBtn" id="introBtn" href="${
+                el.homepage || "#"
+              }" target="_blank"></a>
+          </div>
+  
+          <div id="info" class="info">
+              <div class="homepage">
+                  <div class="homepageInfo">
+                      <i><img src="./img/homeIcon.svg" alt="homeIcon" /></i>
+                      <p class="infoText">홈페이지</p>
+                  </div>
+                  <div class="homepageBtn">
+                      <a id="siteArr" href="${
+                        el.homepage || "#"
+                      }" target="_blank">
+                          <i id="caravan" class="fa-solid fa-caravan fa-lg"></i>
+                      </a>
+                  </div>
+              </div>
+              <div class="current">
+                  <i><img src="./img/timeIcon.svg" alt="timeIcon" /></i>
+                  <p class="infoText">현재운영여부</p>
+                  <p id="manageSttus" style="font-weight: bold; color: ${manageSttusColor}">${
+        el.manageSttus
+      }</p>
+              </div>
+              <div class="road">
+                  <div class="roadInfo">
+                      <i><img src="./img/locationIcon.svg" alt="locationIcon" /></i>
+                      <p class="infoText">오시는 길</p>
+                  </div>
+                  <div class="roadText">
+                      <p id="roadInfoText" style="color: #405966">${
+                        el.direction || el.addr
+                      }</p>
+                  </div>
+              </div>
+              <div class="reservation">
+                  <i><img src="./img/reserveIcon.svg" alt="reserveIcon" /></i>
+                  <p class="infoText">예약방법</p>
+                  <p id="resveCl" style="color: #0b75ad; font-weight: bold">${
+                    el.resveCl || "홈페이지 참고"
+                  }</p>
+              </div>
+              <div class="facilities">
+                  <div class="facilitiesInfo">
+                      <i><img src="./img/facilIcon.svg" alt="facilIcon" /></i>
+                      <p class="infoText">내부시설</p>
+                  </div>
+                  <div class="facilText">
+                      <p id="facilInfoText" class="facilInfoText">${
+                        el.facilInfoText || "홈페이지 참고"
+                      }</p>
+                  </div>
+              </div>
+              <div class="pet">
+                  <i><img src="./img/petIcon.svg" alt="petIcon" /></i>
+                  <p class="infoText">애완견가능여부</p>
+                  <p id="pet" style="font-weight: bold; color: ${petColor}">${
+        el.pet
+      }</p>
+              </div>
+          </div>
+      `;
 
-      const siteBtnClick = (event) => {
+      // 내용 추가
+      $contents.appendChild($contentDiv);
+      // 링크 클릭 시 홈페이지가 없으면 알림 표시
+      const $introBtn = document.getElementById("introBtn");
+      const $siteArr = document.getElementById("siteArr");
+
+      const handleLinkClick = (event) => {
         if (!el.homepage) {
-          alert("홈페이지를 찾을 수 없습니다..!");
           event.preventDefault();
-          return;
+          alert("홈페이지 정보가 없습니다.");
         }
       };
 
-      // 기존 이벤트 리스너 제거
-      $introBtn.removeEventListener("click", siteBtnClick);
-      $siteArr.removeEventListener("click", siteBtnClick);
-
-      $introBtn.addEventListener("click", siteBtnClick, { once: true });
-      $siteArr.addEventListener("click", siteBtnClick, { once: true });
+      $introBtn.addEventListener("click", handleLinkClick);
+      $siteArr.addEventListener("click", handleLinkClick);
     };
-
-    // 이름과 위치를 담을 변수 선언.
-    let firstList = []; // 가까운 20개의 캠핑장 정보를 저장할 배열
-    let positions = [];
-    let map;
-    let markers = []; // 모든 마커를 저장할 배열
 
     // 현재 위치를 가져와서 지도의 중심을 설정
     navigator.geolocation.getCurrentPosition((position) => {
@@ -182,7 +359,7 @@ script.onload = () => {
         });
       };
 
-      // 변수에 들어있는 요소들을 마커 표시
+      // 변수에 들어있는 요소들을 맵에 마커 표시
       const renderMarkers = () => {
         var imageSrc = `./img/camp1.svg`;
         var imageSize = new kakao.maps.Size(20, 20);
@@ -197,6 +374,7 @@ script.onload = () => {
           });
           markers.push(marker);
 
+          // 오버레이 커스텀 디자인.
           var customOverlay = new kakao.maps.CustomOverlay({
             position: el.latlng,
             content: `<div class="speech-bubble-container">
@@ -206,6 +384,8 @@ script.onload = () => {
                   </div>`,
           });
 
+          // 마커를 클릭했을 시 사이트에 리스트 요소가 보여지고 있었다면
+          // 리스트 영역을 none 처리하고 contents 영역을 보여줌
           kakao.maps.event.addListener(marker, "click", () => {
             $contents.style.cssText = "display: block";
             $listCon.style.cssText = "display: none";
@@ -215,11 +395,11 @@ script.onload = () => {
             renderSide(el);
             currentOverlay.push(customOverlay);
 
-            map.panTo(marker.getPosition());
-            customOverlay.setMap(map);
+            map.panTo(marker.getPosition()); // 마커를 클릭시 부드럽게 클릭된 위치로 이동.
+            customOverlay.setMap(map); // 이동한 위치의 오버레이를 보여줌
           });
         });
-        updateMarkerImageBasedOnLevel();
+        updateMarkerImageBasedOnLevel(); // 지도 줌 레벨에 따른 마커이미지 크기 설정.
       };
 
       const positionList = (items) => {
@@ -244,6 +424,7 @@ script.onload = () => {
       };
 
       const renderFirstList = () => {
+        // 첫 화면에서 자신의 주변에 가까운 캠핑장 리스트 20개를 보여줌
         // `firstList`의 항목들을 렌더링
         $lists.innerHTML = ""; // 기존 리스트 초기화
         firstList.forEach((el) => {
@@ -267,8 +448,8 @@ script.onload = () => {
             latitude,
             longitude
           );
-          firstList = closestCampsites;
-          renderFirstList(); // 내 주변 캠핑장 목록에 캠핑장 추가
+          firstList = closestCampsites; // 주변 정보를 리스트에 저장.
+          renderFirstList(); // 내 주변 캠핑장 20개의 목록을 리스트에 추가
         } catch (error) {
           console.log(error);
         } finally {
@@ -282,7 +463,6 @@ script.onload = () => {
 
     const $search = document.getElementById("search");
     const $lists = document.getElementById("lists");
-    const $listPetText = document.querySelector("listPetText");
 
     const listClick = (el) => {
       // 지도를 해당 캠핑장 위치로 이동
@@ -357,6 +537,7 @@ script.onload = () => {
     };
 
     const changeList = () => {
+      // 보여주는 화면을 변환.
       $contents.style.cssText = "display: none";
       $listCon.style.cssText = "display: block";
     };
@@ -374,7 +555,7 @@ script.onload = () => {
     $search.addEventListener("keyup", (e) => {
       if (e.key === "Enter") {
         if ($search.value.trim() == "") {
-          alert("캠핑장을 입력해 주세요!");
+          alert("캠핑장 및 지역을 입력해 주세요!");
           return;
         }
         filterSearch();
@@ -383,22 +564,11 @@ script.onload = () => {
     });
     document.getElementById("searchIcon").addEventListener("click", () => {
       if ($search.value.trim() == "") {
-        alert("캠핑장을 입력해 주세요!");
+        alert("캠핑장 및 지역을 입력해 주세요!");
         return;
       }
       filterSearch();
       changeList();
     });
-
-    // ------------- 아래 화살표 --------------------
-    // $roadInfoText.addEventListener("click", () => {
-    //   $roadInfoText.classList.toggle("expanded");
-    //   $arrowIcon.classList.toggle("rotated");
-    // });
-
-    // $facilInfoText.addEventListener("click", () => {
-    //   $facilInfoText.classList.toggle("clicked");
-    //   $arrowFacilIcon.classList.toggle("rotated");
-    // });
   });
 };

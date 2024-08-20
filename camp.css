@@ -17,6 +17,7 @@ body {
   height: 100%;
 }
 
+/* 마커 디자인 start */
 .speech-bubble-container {
   position: relative;
 }
@@ -39,21 +40,18 @@ body {
   content: '';
   position: absolute;
   top: 100%;
-  /* 상위 요소의 끝부분에 삼각형을 위치시킵니다 */
   left: 51%;
   width: 0;
   height: 0;
   border: 15px solid transparent;
-  /* 삼각형의 크기와 투명한 부분 설정 */
   border-top-color: #ffffff;
-  /* 삼각형의 배경색 설정 */
   border-top: 15px solid #0B75AD;
-  /* 삼각형의 테두리 색상 설정 */
   margin-left: -15px;
-  /* 삼각형을 중앙 정렬 */
   margin-bottom: -15px;
-  /* 삼각형의 위치 조정 */
 }
+
+/* 마커 디자인 end */
+
 
 /* 사이드바 요소들 */
 
@@ -261,7 +259,6 @@ body {
   100% {
     scale: 100%;
     transform: translateX(100px);
-    /* 원하는 만큼 이동할 거리 설정 */
   }
 }
 
@@ -334,17 +331,6 @@ body {
   margin-top: 0.5rem;
 }
 
-.arrowIcon {
-  font-size: 1.5rem;
-  transition: transform 0.5s ease;
-}
-
-.arrowIcon.rotated {
-  transform: rotateX(180deg);
-}
-
-/*  */
-
 .reservation {
   display: flex;
   margin: 1rem 0;
@@ -386,15 +372,6 @@ body {
   cursor: pointer;
 }
 
-.arrowFacilIcon {
-  font-size: 1.5rem;
-  transition: transform 0.5s ease;
-}
-
-.arrowFacilIcon.rotated {
-  transform: rotateX(180deg);
-}
-
 .pet {
   display: flex;
   margin: 1rem 0;
@@ -409,9 +386,7 @@ body {
   top: 200px;
   left: 180px;
   width: 150px;
-  /* 스피너의 전체 너비 */
   height: 50px;
-  /* 스피너의 전체 높이 */
   transform: translate(-50%, -50%);
 }
 
@@ -422,11 +397,8 @@ body {
 
 .spinner img {
   width: 30px;
-  /* 이미지 크기 조절 */
   height: auto;
-  /* 비율 유지 */
   animation: scaleAnimation 1.7s infinite ease-in-out;
-  /* 애니메이션 적용 */
 }
 
 /* 애니메이션 정의 */

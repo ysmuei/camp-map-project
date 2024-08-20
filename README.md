@@ -2,9 +2,8 @@
 https://loca-camp.netlify.app  
 한국관광공사_고캠핑API + Kakao Maps API 를 결합한 캠핑맵 사이트
 
-<img src="img/siteImage.png" alt="캠핑맵 스크린샷" style="width: 100%; max-width: 100px;"/>
-<img src="img/siteImage2.png" alt="캠핑맵 스크린샷2" style="width: 100%; max-width: 100px;"/>
-<img src="img/siteImage2.png" alt="Small Image" width="200" height="150">
+<img src="img/siteImage.png" alt="Small Image" width="300" height="auto">
+<img src="img/siteImage2.png" alt="Small Image" width="300" height="150">
 
 ## 프로젝트 소개
 
